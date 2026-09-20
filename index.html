@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>YesLaku — Aplikasi Kasir & Manajemen Usaha</title>
+<meta name="description" content="YesLaku — aplikasi Point of Sale (POS) dan manajemen usaha untuk UMKM Indonesia. Kasir offline-first, manajemen stok, laporan keuangan, multi outlet, dan fitur Islami opsional." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #0f6e51;
+    --primary-dark: #0b5540;
+    --ink: #12201c;
+    --muted: #5b6b65;
+    --bg: #f6f9f7;
+    --card: #ffffff;
+    --border: #e1e9e4;
+    --radius: 18px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.5;
+  }
+  a { color: inherit; }
+  .wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ---- Nav ---- */
+  header.nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(246, 249, 247, 0.85);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 800;
+    font-size: 20px;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .brand .mark {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--primary), #16a37a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+  }
+  nav.links { display: flex; gap: 28px; }
+  nav.links a {
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--muted);
+  }
+  nav.links a:hover { color: var(--primary); }
+  @media (max-width: 640px) {
+    nav.links { display: none; }
+  }
+
+  /* ---- Hero ---- */
+  .hero {
+    padding: 72px 0 56px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-block;
+    background: #e4f3ec;
+    color: var(--primary-dark);
+    font-weight: 700;
+    font-size: 13px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 20px;
+  }
+  h1 {
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0 0 20px;
+    letter-spacing: -0.02em;
+  }
+  h1 .accent { color: var(--primary); }
+  .lede {
+    max-width: 620px;
+    margin: 0 auto 32px;
+    font-size: 18px;
+    color: var(--muted);
+  }
+  .cta-row {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 26px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 15px;
+    text-decoration: none;
+    border: 1px solid transparent;
+  }
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+  }
+  .btn-primary:hover { background: var(--primary-dark); }
+  .btn-ghost {
+    background: white;
+    color: var(--ink);
+    border-color: var(--border);
+  }
+  .btn-ghost:hover { border-color: var(--primary); color: var(--primary); }
+  .btn[aria-disabled="true"] {
+    opacity: 0.55;
+    pointer-events: none;
+  }
+
+  /* ---- Phone mock ---- */
+  .phone-strip {
+    display: flex;
+    justify-content: center;
+    margin-top: 48px;
+  }
+  .phone {
+    width: 220px;
+    height: 440px;
+    border-radius: 34px;
+    background: linear-gradient(160deg, #103b2c, #0b241c);
+    box-shadow: 0 30px 60px -20px rgba(15, 110, 81, 0.35);
+    padding: 14px;
+    position: relative;
+  }
+  .phone .screen {
+    width: 100%;
+    height: 100%;
+    border-radius: 22px;
+    background: #f6f9f7;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--primary-dark);
+    font-weight: 700;
+  }
+
+  /* ---- Sections ---- */
+  section { padding: 64px 0; }
+  .section-head { text-align: center; max-width: 560px; margin: 0 auto 40px; }
+  .section-head h2 {
+    font-size: clamp(26px, 3.5vw, 34px);
+    font-weight: 800;
+    margin: 0 0 12px;
+  }
+  .section-head p { color: var(--muted); font-size: 16px; margin: 0; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 800px) {
+    .grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 560px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 26px;
+  }
+  .card .icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #e4f3ec;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin-bottom: 16px;
+  }
+  .card h3 { font-size: 17px; margin: 0 0 8px; font-weight: 700; }
+  .card p { margin: 0; color: var(--muted); font-size: 14.5px; }
+
+  .band {
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ---- Privacy ---- */
+  .legal h2 {
+    font-size: 26px;
+    font-weight: 800;
+    margin: 0 0 8px;
+  }
+  .legal .updated { color: var(--muted); font-size: 14px; margin-bottom: 32px; }
+  .legal h3 {
+    font-size: 17px;
+    font-weight: 700;
+    margin: 28px 0 8px;
+  }
+  .legal p, .legal li { color: #33403b; font-size: 15px; line-height: 1.7; }
+  .legal ul { padding-left: 20px; margin: 8px 0; }
+  .legal .note {
+    margin-top: 32px;
+    padding: 16px 18px;
+    background: #f1f7f3;
+    border-radius: 12px;
+    font-size: 14px;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* ---- Footer ---- */
+  footer {
+    padding: 40px 0;
+    text-align: center;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  footer a { color: var(--primary); font-weight: 600; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="#top" class="brand">
+      <span class="mark">Y</span>
+      YesLaku
+    </a>
+    <nav class="links">
+      <a href="#fitur">Fitur</a>
+      <a href="#unduh">Unduh</a>
+      <a href="#privasi">Privasi</a>
+      <a href="#kontak">Kontak</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero" id="top">
+    <div class="wrap">
+      <span class="eyebrow">Untuk UMKM Indonesia</span>
+      <h1>Kasir &amp; Manajemen Usaha <br><span class="accent">yang Selalu Siap Jualan</span></h1>
+      <p class="lede">
+        YesLaku adalah aplikasi Point of Sale (POS) offline-first — transaksi tetap
+        jalan meski internet mati. Kelola stok, laporan, tim, dan lebih dari satu
+        outlet dalam satu aplikasi.
+      </p>
+      <div class="cta-row">
+        <!-- TODO: ganti href ke link Play Store asli setelah aplikasi live -->
+        <a class="btn btn-primary" href="#" aria-disabled="true">📱 Segera di Google Play</a>
+        <a class="btn btn-ghost" href="#fitur">Lihat Fitur</a>
+      </div>
+
+      <div class="phone-strip" aria-hidden="true">
+        <div class="phone">
+          <div class="screen">
+            <div style="font-size:28px;">Y</div>
+            <div>YesLaku</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="fitur" class="band">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Semua yang dibutuhkan usaha Anda</h2>
+        <p>Fokus pada kecepatan transaksi dan kejelasan laporan — bukan kompleksitas yang tidak perlu.</p>
+      </div>
+      <div class="grid">
+        <div class="card">
+          <div class="icon">🧾</div>
+          <h3>Kasir Offline-First</h3>
+          <p>Transaksi tetap bisa selesai walau internet mati — data tersinkron otomatis saat online kembali.</p>
+        </div>
+        <div class="card">
+          <div class="icon">📦</div>
+          <h3>Manajemen Stok</h3>
+          <p>Pantau stok, mutasi barang, dan barcode produk secara akurat di setiap outlet.</p>
+        </div>
+        <div class="card">
+          <div class="icon">📊</div>
+          <h3>Laporan Keuangan</h3>
+          <p>Laporan penjualan, laba, dan pengeluaran yang jelas — bisa dibedah per outlet.</p>
+        </div>
+        <div class="card">
+          <div class="icon">🏬</div>
+          <h3>Multi Outlet</h3>
+          <p>Kelola beberapa cabang dalam satu bisnis — katalog sama, stok dan laporan terpisah.</p>
+        </div>
+        <div class="card">
+          <div class="icon">👥</div>
+          <h3>Tim &amp; Peran</h3>
+          <p>Atur akses Pemilik, Manager, Kasir, dan Gudang sesuai tanggung jawab masing-masing.</p>
+        </div>
+        <div class="card">
+          <div class="icon">🕌</div>
+          <h3>Fitur Islami (Opsional)</h3>
+          <p>Estimasi zakat usaha dan pengingat waktu sholat — tetap ringkas, tidak mengganggu operasional.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="unduh">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Unduh YesLaku</h2>
+        <p>Tersedia untuk Android (ponsel &amp; tablet) — iOS menyusul.</p>
+      </div>
+      <div class="cta-row">
+        <!-- TODO: ganti href ke link Play Store asli setelah aplikasi live -->
+        <a class="btn btn-primary" href="#" aria-disabled="true">📱 Segera di Google Play</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="privasi" class="band">
+    <div class="wrap legal" style="max-width: 720px;">
+      <h2>Kebijakan Privasi YesLaku</h2>
+      <p class="updated">Terakhir diperbarui: 20 September 2026</p>
+
+      <h3>1. Pengumpulan Informasi</h3>
+      <p>Kami mengumpulkan informasi yang Anda berikan secara langsung kepada kami, seperti saat Anda membuat akun, memperbarui profil usaha Anda, atau menghubungi layanan pelanggan. Informasi ini mungkin termasuk nama, alamat email, nomor telepon, dan data operasional bisnis.</p>
+
+      <h3>2. Penggunaan Informasi</h3>
+      <p>Kami menggunakan informasi yang kami kumpulkan untuk:</p>
+      <ul>
+        <li>Menyediakan, memelihara, dan meningkatkan layanan kami.</li>
+        <li>Memproses transaksi dan mengirimkan pemberitahuan terkait.</li>
+        <li>Merespons komentar, pertanyaan, dan permintaan Anda.</li>
+        <li>Menganalisis tren penggunaan untuk pengembangan fitur.</li>
+      </ul>
+
+      <h3>3. Keamanan Data</h3>
+      <p>Keamanan data Anda sangat penting bagi kami. Kami menerapkan standar keamanan industri (termasuk penyimpanan aman menggunakan Firebase) untuk melindungi informasi Anda dari akses yang tidak sah, modifikasi, atau penghancuran.</p>
+
+      <h3>4. Layanan Pihak Ketiga</h3>
+      <p>YesLaku menggunakan layanan pihak ketiga berikut, yang dapat mengumpulkan data sesuai kebijakan privasi masing-masing:</p>
+      <ul>
+        <li><strong>Firebase</strong> (Google) — autentikasi, penyimpanan data, dan analitik penggunaan aplikasi (Firebase Analytics), serta pelaporan error (Crashlytics).</li>
+        <li><strong>Google AdMob</strong> — menampilkan iklan banner di dalam aplikasi. AdMob dapat menggunakan Advertising ID perangkat Anda untuk menampilkan dan mengukur performa iklan.</li>
+      </ul>
+
+      <h3>5. Penghapusan Data</h3>
+      <p>Anda dapat menghapus akun Anda kapan saja melalui menu Profil di aplikasi. Penghapusan akun akan menghapus data pribadi Anda; penghapusan sebuah usaha (toko) bersifat permanen setelah masa tenggang 7 hari.</p>
+
+      <p style="margin-top:28px;">Jika Anda memiliki pertanyaan tentang Kebijakan Privasi ini, silakan hubungi kami di <a href="mailto:support@yeslaku.com">support@yeslaku.com</a>.</p>
+
+      <p class="note">
+        Catatan pengembang: bagian §4 dan §5 baru ditambahkan (belum ada di teks kebijakan privasi lama di dalam aplikasi) karena AdMob dan alur hapus akun/toko sudah aktif. Sinkronkan ulang dengan teks di <code>lib/features/auth/presentation/privacy_policy_page.dart</code> supaya keduanya konsisten.
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<footer id="kontak">
+  <div class="wrap">
+    <p>Ada pertanyaan? Hubungi <a href="mailto:support@yeslaku.com">support@yeslaku.com</a></p>
+    <p>© 2026 YesLaku. Semua hak cipta dilindungi.</p>
+  </div>
+</footer>
+
+</body>
+</html>
